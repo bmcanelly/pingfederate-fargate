@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Starting `date`
+  build:
+    on-failure: ABORT
+    commands:
+      - images='pingidentity/pingfederate:11.1.1-edge'
+      - for image in $images;
+        do
+          docker pull $image;
+        done
+      - $(aws ecr get-login --no-include-email --region $AWS_REGION)
+      - for image in $images;
+        do
+          new_image=${image/:/-};
+          new_image=${new_image/\//-};
+          docker tag ${image} ${REPO}:${new_image};
+          docker push ${REPO}:${new_image};
+        done
+  post_build:
+    commands:
+      - echo Finished `date`
+artifacts:
+  files:

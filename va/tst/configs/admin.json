@@ -1,0 +1,129 @@
+[
+  {
+    "name":      "tst_pf_admin",
+    "image":     "your_account_id.dkr.ecr.us-east-1.amazonaws.com/pingfederate:11.1.1-edge",
+    "user":      "9031:9999",
+    "command":   null,
+    "essential": true,
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-group":         "/pf/tst/admin",
+        "awslogs-region":        "us-east-1",
+        "awslogs-stream-prefix": "main"
+      }
+    },
+    "portMappings": [
+      {
+        "protocol":      "tcp",
+        "containerPort": 9999,
+        "hostPort":      9999
+      },
+      {
+        "protocol":      "tcp",
+        "containerPort": 7600,
+        "hostPort":      7600
+      }
+    ],
+    "environment": [
+      {
+        "name":  "CLUSTER_NAME",
+        "value": "tst-pf"
+      },
+      {
+        "name":  "CLUSTER_FULLNAME",
+        "value": "tst.pf.local"
+      },
+      {
+        "name":  "CLUSTER_BIND_ADDRESS",
+        "value": "match-interface:eth1"
+      },
+      {
+        "name":  "DISCOVERY_INITIAL_HOST",
+        "value": ""
+      },
+      {
+        "name":  "LOG_EVENT_DETAIL",
+        "value": "true"
+      },
+      {
+        "name":  "MOTD_URL",
+        "value": ""
+      },
+      {
+        "name":  "MUTE_LICENSE_VERIFICATION",
+        "value": "YES"
+      },
+      {
+        "name":  "NODE_GROUP_ID",
+        "value": "E-TST"
+      },
+      {
+        "name":  "OPERATIONAL_MODE",
+        "value": "CLUSTERED_CONSOLE"
+      },
+      {
+        "name":  "PF_LDAP_PASSWORD",
+        "value": "none"
+      },
+      {
+        "name":  "PF_LDAP_USERNAME",
+        "value": "none"
+      },
+      {
+        "name":  "PING_IDENTITY_ACCEPT_EULA",
+        "value": "YES"
+      },
+      {
+        "name":  "PING_IDENTITY_DEVOPS_USER",
+        "value": "youruser@yourdomain.com"
+      },
+      {
+        "name":  "SERVER_PROFILE_UPDATE",
+        "value": "true"
+      },
+      {
+        "name":  "SERVER_PROFILE_PATH",
+        "value": ""
+      },
+      {
+        "name":  "SERVER_PROFILE_URL",
+        "value": ""
+      },
+      {
+        "name":  "URL",
+        "value": "https://tst.yourdomain.com"
+      },
+      {
+        "name":  "ENTITY_ID",
+        "value": "POC"
+      }
+    ],
+    "secrets": [
+      {
+        "name":      "CLUSTER_AUTH_PWD",
+        "valueFrom": "/pingfederate/tst/cluster_auth_pwd"
+      },
+      {
+        "name":      "PING_IDENTITY_DEVOPS_KEY",
+        "valueFrom": "/pingfederate/devops_key"
+      }
+    ],
+    "runtimePlatform": {
+      "operatingSystemFamily": "LINUX",
+      "cpuArchitecture":       "ARM64"
+    },
+    "mountPoints": [
+      {
+        "containerPath": "/opt/in",
+        "sourceVolume":  "in"
+      },
+      {
+        "containerPath": "/opt/out/instance/server/default/data",
+        "sourceVolume":  "data"
+      }
+    ],
+    "volumesFrom": [],
+    "cpu": 0
+  }
+]
